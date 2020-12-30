@@ -17,6 +17,8 @@
 
 
 # FUNCTIONS
+
+# Backup: Does all the backing up
 function backup {
     # echo "if BACKUP_LOC"
     if [[ ! -d "$BACKUP_LOC" ]]; then
@@ -32,6 +34,7 @@ function backup {
     exit
 }
 
+# Restore: Restores what's needed:
 function restore {
     #
     # Pick the restore directory
