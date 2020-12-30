@@ -1,6 +1,7 @@
 # Test config
 # parse the config file and evaluate the output in the current shell
-source <( cat readconfig.sh )
+#source <( cat readconfig.sh )
+source <( functions )
 source <( readconfig config.file )
  
 echo "fullname = $fullname"

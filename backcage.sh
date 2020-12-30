@@ -9,14 +9,25 @@
 
 # Modified by M. Feldman 2020-12-21, all rights reserved.
 
-# TODO: Change name to cageback (all lower case).
 # TODO: Add initialization of the constants.
 # TODO: Add the functions
 # TODO: Move informative messages to the functions
 # TODO: Add license
 
-
 # FUNCTIONS
+
+# Initialize the external functions
+source functions
+echo "After functions source"
+echo "See what readconfig is returning"
+#readconfig backcage.cfg
+readconfig config.file
+echo "Now try to use it to set the variables"
+#source readconfig backcage.cfg
+source <(readconfig backcage.cfg)
+echo "fullname = $FULLNAME"
+echo $POOL_NAME
+exit
 
 # Backup: Does all the backing up
 function backup {
@@ -40,7 +51,7 @@ function restore {
     # Pick the restore directory
     #
     cd $BACKUP_LOC
-    shopt -s dotglob shopt -s nullglob array = (*)
+    # shopt -s dotglob shopt -s nullglob array = (*)  <- Have to fix this
 
     for dir in "${array[@]}"; do echo; done
 
@@ -54,6 +65,26 @@ function restore {
     exit
 }
 
+# Initialize configuration
+config_file="backcage.cfg"
+echo "Configuration file: $config_file"
+source <( "readconfig ${config_file}" )
+
+echo "Pool name: $POOL_NAME"
+
+# Configuration parameters
+#echo "cron = $cron"
+#echo "POOL_NAME = $POOL_NAME"
+#echo "LOGS_LOC = $LOGS_LOC"
+#echo "FILE_NAME = $FILE_NAME"
+#echo "JAIL_DIR = $JAIL_DIR"
+#echo "JAIL_IMAGE = "$JAIL_IMAGE"
+#echo "FINAL = $FINAL"
+#echo "BACKUP_DIR = "$BACKUP_DIR" # The actual directory of the current backup - this is is subdirectory of the main directory above with a timestamp
+#echo "FULL_LOG_NAME = FULL_LOG_NAME"
+#echo "maxNrOfBackups = $maxNrOfBackups" # The maximum number of backups to keep (when set to 0, all backups are kept)
+
+exit
 
 # ****** PROGRAM FLOW ******
 
