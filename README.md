@@ -62,9 +62,11 @@ This project is a BASH shell script for creating and restoring local backups of 
 
 ### Built With
 
-* []()
-* []()
-* []()
+* [Rosettacode: Read a configuration file](http://www.rosettacode.org/wiki/Read_a_configuration_file#UNIX_Shell)
+* [Othneil Drew: Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+* [NasKar2: Freenas-Backup-Jails](https://github.com/NasKar2/freenas-backup-jails)
+* [Raze42: FreeNAS: Backup Jails Automatically Using IOCAGE Import and Export](https://digimoot.wordpress.com/2020/01/11/freenas-backup-jails-automatically-using-iocage-import-and-export/)
+* _Need documentation template_
 
 
 
@@ -94,16 +96,19 @@ Make sure you have the Bourne Again Shell (BASH) installed on your system.
 backcage.sh [options] [explicit\_cage_names...]
 
 ### Options
->-B or -b Backup (default) -- cage(s) will be backed up
+All options have defaults, so no option _must_ be specified.
+>{-B or -b} Backup (default) -- cage(s) will be backed up
 >
 >-R or -r Restore -- cage(s) will be restored
 >
 >-S or -s Select -- use a menu of available cage(s) to select candidate(s) for backup or restoration
+>
+>-C [configuration file path] or -c [configuration file path]; default is "backcage.cfg" in the same folder as backcage.sh.
 
-Backup and restore are two mutually exclusive _actions_. During a single invocation **backcage** can either backup or restore, but not both.
+Backup and restore are two mutually exclusive _actions_. During a single invocation **backcage** can either backup or restore, but not both. The configuration file option requires the path to the configuration file as its argument.
 
 ### Modes
-Backcage operates in one of three modes, depending on the explicit cage names given in the argument list. The modes are: 
+Backcage operates in one of three modes, depending on the explicit cage names given in the argument list. The modes are: 	
 
 <dl>
 <dt>Implicit</dt>
