@@ -101,23 +101,51 @@ All options have defaults, so no option _must_ be specified.
 >
 >-R or -r Restore -- cage(s) will be restored
 >
->-S or -s Select -- use a menu of available cage(s) to select candidate(s) for backup or restoration
+>-C [configuration file path] or -c [configuration file path]; default is "backcage.cfg" in the same folder as backcage.sh. This option requires the path to the configuration file as its argument. See Configuration, below.
 >
->-C [configuration file path] or -c [configuration file path]; default is "backcage.cfg" in the same folder as backcage.sh.
+>-M or -m Menu -- use a menu of available cage(s) to select candidate(s) for backup or restoration.[\^1]
+[\^1]:Currently only one cage at a time can be selected from a menu. A future modification might allow the user to select multiple cages from a menu.
+>
+>-S or -s Secure -- Implements an extra level of security by prohibiting evaluation of configuration statements. This option also has several disadvantages. See the Configuration section below.
 
-Backup and restore are two mutually exclusive _actions_. During a single invocation **backcage** can either backup or restore, but not both. The configuration file option requires the path to the configuration file as its argument.
+### Actions
+Backup and restore are two mutually exclusive _actions_. During a single invocation **backcage** can either backup or restore, but not both. 
 
 ### Modes
-Backcage operates in one of three modes, depending on the explicit cage names given in the argument list. The modes are: 	
+Backcage operates in one of three modes, depending on the explicit cage names given in the argument list. The modes are: 
 
 <dl>
 <dt>Implicit</dt>
 <dd>No arguments (explicit names) are given in the argument list. If backup is in effect, all available cages will be backed up. If restore is in effect, the latest backed up iocage jails available will be restored.</dd>
 <dt>Explicit</dt>
 <dd>One or more arguments (explicit names) are in the argument list. Only these cage(s) will be backed up or restored. If more than one backup exists for an individual cage, the latest will be use unless **Select** is in effect.</dd>
-<dt>Select</dt>
+<dt>Menu</dt>
 <dd>The list of explicit cage names is treated as a _selection list_ from which a cage may be chosen for backup or restoration. If no explicit cage names are specified, then all cages available will be used to populate the selection list.
 </dl>
+
+### Configuration
+This section discusses the general format of configuration files, security issues, configuration options, and examples.
+ 
+#### Format
+BackCage uses [Rosetta Code's configuration file format](http://rosettacode.org/wiki/Read_a_configuration_file). Blank lines are ignored, as are lines beginning with a hash (#) or semicolon (;), usually used for comments.
+
+Other lines consist of the configuration option name, followed by its assigned value. The name is case insensitive and separated from its value by  either a blank or equals sign. The values are case sensitive, and a single option name may be assigned multiple values separated by commas. Other whitespace is ignored. The configuration format does not allow for values containing commas, but other values with embedded blanks and special characters do not require enclosing quotation marks because the entire value is assigned to the option.
+
+#### Security Issues
+The file format has been modified to allow "cascading" values. A value assigned to an option may be used in the values of subsequent options simply by using the earlier option's name (see the examples). [NasKar2](https://github.com/NasKar2/freenas-backup-jails) uses this approach for configuraion options, and it has some important advantages:
+
+* It requires less typing
+* It is less error prone because earlier values are automatically produced exactly in subsequent assignments
+* It allows easier modification because changing an earlier value automatically results in appropriate changes to subsequent values.    
+
+Its main disadvantage is it is less secure. [NasKar2](https://github.com/NasKar2/freenas-backup-jails) includes configuration statements in the backup/restore script itself, so the user has to be able to edit the script. Since the script itself may be executed with root or other high security status, this can be a security risk. Moving configuration statements to a separate file conforms to good programming practices, such as ["encapsulating what changes"](https://dzone.com/articles/10-coding-principles-every-programmer-should-learn). But even then if configuration assignments are executable shell commands read and executed by a shell "source" command, as is commonly done, executable statements in the configuration file can compromise security. Deliberately parsing a configuration file, as Rosetta Code and BackCage do, avoids this threat (but may not eliminate it entirely) because the configuration statements themselves need not be executable (which is why separating option names from values with a space is preferable to using an equals sign), and the parsing can check for a legal, secure format.
+
+Nonetheless, the "cascading" values feature, in which the name of an option assigned a value early in the configuration file can be used in subsequent value assignment statements to insert the earlier value, is implemented here by using the shell script "eval" command, which executes the assigned value as shell statement. While I believe the security risk is less than most alternatives, it is still greater than not evaluating the option value at all.
+
+Therefore, BackCage has a "Secure" option (-S or -s) that turns off such evaluation. If set, then the configuration file must "manually expand" all values by explicitly typing them in the settings. Otherwise, the Secure option is turned off, and all configuration assignment statements will be individually evaluated.
+
+#### Configuration Options
+
 
 ### Usage examples
 
@@ -205,6 +233,8 @@ Project Link: [https://github.com/Gnossos/BackCage](https://github.com/Gnossos/B
 * []()
 
 
+<!-- Notes -->
+## Notes
 
 
 

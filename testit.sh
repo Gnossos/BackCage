@@ -37,13 +37,30 @@ readconfig() (
  
 # THESE COMMANDS ARE USED FOR TESTING THE FUNCTION
 # parse the config file and evaluate the output in the current shell
-source <( readconfig config.file )
+#source <( readconfig config.file )
+source <( readconfig backcage.cfg )
  
-# The following was used to test this function.
-echo "FULLNAME = $FULLNAME"
-echo "FAVOURITEFRUIT = $FAVOURITEFRUIT"
-echo "NEEDSPEELING = $NEEDSPEELING"
-echo "SEEDSREMOVED = $SEEDSREMOVED"
-for i in "${!OTHERFAMILY[@]}"; do
-echo "OTHERFAMILY[$i] = ${OTHERFAMILY[i]}"
-done
+# Parse the configuration lines into the correct variables
+CRON=$(eval echo $cron)
+POOL_NAME=$(eval echo $pool_name)
+LOGS_LOC=$(eval echo $logs_loc)
+FILE_NAME=$(eval echo $file_name)
+JAIL_DIR=$(eval echo $jail_dir)
+JAIL_IMAGE=$(eval echo $jail_image)
+BACKUP_LOC=$(eval echo $backup_loc)
+FINAL=$(eval echo $final)
+BACKUP_DIR=$(eval echo $backup_dir)
+FULL_LOG_NAME=$(eval echo $full_log_name)
+MAXNOFBACKUPS=$(eval echo $manofbackups)
+
+echo $CRON
+echo $POOL_NAME
+echo $LOGS_LOC
+echo $File_NAME
+echo $JAIL_DIR
+echo $JAIL_IMAGE
+echo $BACKUP_LOC
+echo $FINAL
+echo $BACKUP_DIR
+echo $FULL_LOG_NAME
+echo $MAXnRoFbACKUPS

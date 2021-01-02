@@ -1,11 +1,9 @@
-# Read a configuration file.
-# Source: http://rosettacode.org/wiki/Read_a_configuration_file#UNIX_Shell
-
+# TEST2 -- For testing dependent options
 readconfig() (
     # redirect stdin to read from the given filename
     exec 0<"$1"
  
-    declare -l varname    # Original version forced everything to lowercase. Here we'll leave choice of case up to the software designer and user.
+    declare -l varname
     while IFS=$' =\t' read -ra words; do
         # is it a comment or blank line?
         if [[ ${#words[@]} -eq 0 || ${words[0]} == ["#;"]* ]]; then
@@ -35,15 +33,18 @@ readconfig() (
     done
 )
  
-# THESE COMMANDS ARE USED FOR TESTING THE FUNCTION
 # parse the config file and evaluate the output in the current shell
-source <( readconfig config.file )
+source <( readconfig config2.file )
  
-# The following was used to test this function.
-echo "FULLNAME = $FULLNAME"
-echo "FAVOURITEFRUIT = $FAVOURITEFRUIT"
-echo "NEEDSPEELING = $NEEDSPEELING"
-echo "SEEDSREMOVED = $SEEDSREMOVED"
-for i in "${!OTHERFAMILY[@]}"; do
-echo "OTHERFAMILY[$i] = ${OTHERFAMILY[i]}"
+echo "fullname = $fullname"
+echo "favouritefruit = $favouritefruit"
+echo "needspeeling = $needspeeling"
+echo "seedsremoved = $seedsremoved"
+for i in "${!otherfamily[@]}"; do
+    echo "otherfamily[$i] = ${otherfamily[i]}"
 done
+echo "greeting = $greeting"
+echo "greeting2 = $greeting2"
+echo "greeting3 = $greeting3"
+echo "greeting4 = $greeting4"
+echo "Hello $fullname"

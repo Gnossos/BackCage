@@ -21,12 +21,13 @@ source functions
 echo "After functions source"
 echo "See what readconfig is returning"
 #readconfig backcage.cfg
-readconfig config.file
+eval source <( readconfig backcage.cfg )
+echo "config = $config"
 echo "Now try to use it to set the variables"
 #source readconfig backcage.cfg
-source <(readconfig backcage.cfg)
-echo "fullname = $FULLNAME"
-echo $POOL_NAME
+#source <(readconfig backcage.cfg)
+eval readconfig backcage.cfg
+echo "poolname = $POOL_NAME"
 exit
 
 # Backup: Does all the backing up
